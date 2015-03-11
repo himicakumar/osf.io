@@ -37,6 +37,9 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
         frameworks: ['mocha', 'sinon'],
         files: [
+            // TODO: Conditionally include es5-shim and es5-sham when testing against
+            // IE<9, like we do on production
+
             // Mimics loading jquery and jquery-ui with script tags
             'website/static/vendor/bower_components/jquery/dist/jquery.js',
             'website/static/vendor/bower_components/jquery-ui/ui/jquery-ui.js',
