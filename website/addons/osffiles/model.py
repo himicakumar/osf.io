@@ -10,8 +10,12 @@ from modularodm import fields
 
 from framework.guid.model import GuidStoredObject
 from framework.analytics import get_basic_counters
+from framework.mongo import StoredObject
 
 from website.addons.base import AddonNodeSettingsBase, GuidFile
+from website.models import NodeLog
+from website.models import Tag
+from modularodm.validators import MaxLengthValidator
 
 
 logger = logging.getLogger(__name__)
@@ -48,6 +52,8 @@ class NodeFile(GuidStoredObject):
     content_type = fields.StringField()
     git_commit = fields.StringField()
     is_deleted = fields.BooleanField(default=False)
+    tags2 = fields.ForeignField('tag', list=True, backref='tagged')
+
 
     date_created = fields.DateTimeField(auto_now_add=datetime.datetime.utcnow)
     date_uploaded = fields.DateTimeField(auto_now_add=datetime.datetime.utcnow)
@@ -83,7 +89,7 @@ class NodeFile(GuidStoredObject):
 
     # URL methods. Note: since NodeFile objects aren't cloned on forking or
     # registration, the `node` field doesn't necessarily refer to the project
-    # to which a given file is attached. These methods must take a `node`
+    # to which a given file is attached. These methods must take a `no de`
     # parameter to build their URLs.
 
     def url(self, node):
@@ -115,3 +121,41 @@ class NodeFile(GuidStoredObject):
         return '{}osffiles/{}/info/'.format(
             node.api_url, self.filename
         )
+    def remove_tag(self, tag, auth, save=True):
+       if tag in self.tags2:
+            self.tags2.remove(tag)
+            self.add_log(
+                action=NodeLog.TAG_REMOVED,
+                params={
+                    'file': self.parent_id,
+                    'node': self._primary_key,
+                    'tag': tag,
+                },
+                auth=auth,
+                save=False,
+            )
+            if save:
+                self.save()
+
+    def add_tag(self, tag, auth, save=True):
+        if tag not in self.tags2:
+            new_tag = Tag.load(tag)
+            if not new_tag:
+                new_tag = Tag(_id=tag)
+            new_tag.save()
+            self.tags2.append(new_tag)
+            self.add_log(
+                action=NodeLog.TAG_ADDED,
+                params={
+                    'file': self.parent_id,
+                    'node': self._primary_key,
+                    'tag': tag,
+                },
+                auth=auth,
+                save=False,
+            )
+            if save:
+                self.save()
+
+
+

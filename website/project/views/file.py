@@ -87,6 +87,7 @@ def get_cache_content(node_settings, cache_file_name, start_render=False,
                 cache_file_name,
                 download_url,
             )
+
         return None
 
 

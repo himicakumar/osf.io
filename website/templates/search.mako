@@ -1,12 +1,11 @@
 <%inherit file="base.mako"/>
 <%def name="title()">Search</%def>
 <%def name="content()">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <div id="searchControls" class="scripted">
         <%include file='./search_bar.mako' />
         <div class="row">
             <div class="col-md-12">
-                <div class="row">
+                <div class="row m-t-md">
                     <!-- ko if: categories().length > 0-->
                     <div class="col-md-3">
                         <div class="row">
@@ -183,7 +182,14 @@
         <!-- ko if: contributors.length > 0 -->
         <p>
             <strong>Contributors:</strong> <span data-bind="foreach: contributors">
-                <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- ko if: $parent.contributors_url[$index()] -->
+                    <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- /ko -->
+                <!-- ko ifnot: ($parent.contributors_url[$index()]) -->
+                    {{ $data }}
+                <!-- /ko -->
+
+
             <!-- ko if: ($index()+1) < ($parent.contributors.length) -->&nbsp;- <!-- /ko -->
             </span>
         </p>
@@ -208,7 +214,14 @@
         <!-- ko if: contributors.length > 0 -->
         <p>
             <strong>Contributors:</strong> <span data-bind="foreach: contributors">
-                <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- ko if: $parent.contributors_url[$index()] -->
+                    <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- /ko -->
+                <!-- ko ifnot: ($parent.contributors_url[$index()]) -->
+                    {{ $data }}
+                <!-- /ko -->
+
+
             <!-- ko if: ($index()+1) < ($parent.contributors.length) -->&nbsp;- <!-- /ko -->
             </span>
         </p>
@@ -235,7 +248,12 @@
         <!-- ko if: contributors.length > 0 -->
         <p>
             <strong>Contributors:</strong> <span data-bind="foreach: contributors">
-                <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- ko if: $parent.contributors_url[$index()] -->
+                    <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- /ko -->
+                <!-- ko ifnot: ($parent.contributors_url[$index()]) -->
+                    {{ $data }}
+                <!-- /ko -->
             <!-- ko if: ($index()+1) < ($parent.contributors.length) -->&nbsp;- <!-- /ko -->
             </span>
         </p>
@@ -260,7 +278,14 @@
         <!-- ko if: contributors.length > 0 -->
         <p>
             <strong>Contributors:</strong> <span data-bind="foreach: contributors">
-                <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- ko if: $parent.contributors_url[$index()] -->
+                    <a data-bind="attr.href: $parent.contributors_url[$index()]">{{ $data }}</a>
+                <!-- /ko-->
+                <!-- ko ifnot: ($parent.contributors_url[$index()]) -->
+                    {{ $data }}
+                <!-- /ko -->
+
+
             <!-- ko if: ($index()+1) < ($parent.contributors.length) -->&nbsp;- <!-- /ko -->
             </span>
         </p>
@@ -281,7 +306,11 @@
 </%def>
 
 <%def name="javascript_bottom()">
-
+    <script type="text/javascript">
+        window.contextVars = $.extend(true, {}, window.contextVars, {
+            search:true
+        });
+    </script>
 
     <script src=${"/static/public/js/search-page.js" | webpack_asset}></script>
 

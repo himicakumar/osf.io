@@ -153,6 +153,39 @@ MEETING_DATA = {
         ],
         'public_projects': True,
     },
+    'APRS2015': {
+        'name': 'UVA Annual Postdoctoral Research Symposium 2015',
+        'info_url': None,
+        'logo_url': 'http://s1.postimg.org/50qj9u6i7/GPA_Logo.jpg',
+        'active': True,
+        'admins': [
+            'mhurst@virginia.edu',
+            'KatyCain526@gmail.com',
+        ],
+        'public_projects': True,
+    },
+    'ASB2015': {
+        'name': 'Association of Southeastern Biologists  2015',
+        'info_url': None,
+        'logo_url': 'http://www.sebiologists.org/wp/wp-content/uploads/2014/09/banner_image_Large.png',
+        'active': True,
+        'admins': [
+            'amorris.mtsu@gmail.com',
+            'KatyCain526@gmail.com',
+        ],
+        'public_projects': True,
+    },
+    'TeaP2015': {
+        'name': 'Tagung experimentell arbeitender Psychologen 2015',
+        'info_url': None,
+        'logo_url': None,
+        'active': True,
+        'admins': [
+            'sara.d.bowman@gmail.com',
+        ],
+        'public_projects': True,
+    },
+    
 }
 
 

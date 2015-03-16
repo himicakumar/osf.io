@@ -8,20 +8,23 @@ from elasticsearch import Elasticsearch
 
 from website import settings
 
+from util import generate_color
+
 share_es = Elasticsearch(
     settings.SHARE_ELASTIC_URI,
     request_timeout=settings.ELASTIC_TIMEOUT
 )
 
-def search(query):
-    # Run the real query and get the results
-    raw_results = share_es.search(index='share', doc_type=None, body=query)
 
-    results = [hit['_source'] for hit in raw_results['hits']['hits']]
-    return {
-        'results': results,
-        'count': raw_results['hits']['total'],
+def search(query, raw=False):
+    # Run the real query and get the results
+    results = share_es.search(index='share', doc_type=None, body=query)
+
+    return results if raw else {
+        'results': [hit['_source'] for hit in results['hits']['hits']],
+        'count': results['hits']['total'],
     }
+
 
 def count(query):
     if query.get('from') is not None:
@@ -36,6 +39,21 @@ def count(query):
         'count': count['count']
     }
 
+
+def providers():
+
+    provider_map = share_es.search(index='share_providers', doc_type=None, body={
+        'query': {
+            'match_all': {}
+        },
+        'size': 10000
+    })
+
+    return {
+        'providerMap': {
+            hit['_source']['short_name']: hit['_source'] for hit in provider_map['hits']['hits']
+        }
+    }
 
 def stats(query=None):
     query = query or {"query": {"match_all": {}}}
@@ -150,11 +168,14 @@ def data_for_charts(elastic_results):
     source_and_counts = [[item['key'], item['doc_count']] for item in source_data]
     for_charts['shareDonutGraph'] = source_and_counts
 
+    r = generate_color()
     stats = {}
+    colors = {}
     for bucket in elastic_results['aggregations']['sources']['buckets']:
         stats[bucket['key']] = {
             'doc_count': bucket['doc_count'],
         }
+        colors[bucket['key']] = r.next()
 
     for bucket in elastic_results['aggregations']['earlier_documents']['sources']['buckets']:
         stats[bucket['key']]['earlier_documents'] = bucket['doc_count']
@@ -209,13 +230,15 @@ def data_for_charts(elastic_results):
     all_data['charts'] = {
         'shareDonutGraph': {
             'type': 'donut',
-            'columns': for_charts['shareDonutGraph']
+            'columns': for_charts['shareDonutGraph'],
+            'colors': colors
         },
         'shareTimeGraph': {
             'x': 'x',
             'type': 'area-spline',
             'columns': for_charts['date_totals']['date_numbers'],
-            'groups': [for_charts['date_totals']['group_names']]
+            'groups': [for_charts['date_totals']['group_names']],
+            'colors': colors
         }
     }
 

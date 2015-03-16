@@ -19,6 +19,7 @@
           % else:
             <img src="/static/img/loading.gif">
           % endif
+
         </div>
       </div>
 
@@ -27,20 +28,20 @@
           <ol class="breadcrumb">
             <li><a href="{{ node.urls.files }}" data-bind="text: node.title"></a></li>
             <li class="active overflow" data-bind="text: file.provider"></li>
-            <!-- ko foreach: file.path.split('/').slice(1) -->
+            <!-- ko foreach: path.slice(1) -->
             <li class="active overflow" data-bind="text: $data"></li>
             <!-- /ko -->
           </ol>
 
           <span data-bind="if: currentVersion">
             <a class="btn btn-success btn-md file-download" href="{{ currentVersion().osfDownloadUrl }}" data-bind="click: currentVersion().download">
-              Download <i class="icon-download-alt"></i>
+              Download <i class="fa-download"></i>
             </a>
           </span>
 
           <span data-bind="if: editable">
             <button class="btn btn-danger btn-md file-delete" data-bind="click: askDelete">
-              Delete <i class="icon-trash"></i>
+              Delete <i class="fa-trash-o"></i>
             </button>
           </span>
 
@@ -48,10 +49,11 @@
           <table class="table" data-bind="if: versioningSupported && revisions().length">
             <thead>
               <tr>
-                <th>Version</th>
+                <th>Version ID</th>
                 <th>Date</th>
                 <th data-bind="if: userColumn">User</th>
                 <th colspan="2">Download</th>
+
               </tr>
             </thead>
 
@@ -59,10 +61,10 @@
               <tr data-bind="css: $parent.isActive(revision)">
                 <td>
                   <a href="{{ revision.osfViewUrl }}" data-bind="if: revision !== $parent.currentVersion()">
-                    {{ revision.version.substring(0, 8) }}
+                    {{ revision.displayVersion }}
                   </a>
                   <span data-bind="if: revision === $parent.currentVersion()">
-                    {{ revision.version.substring(0, 8) }}
+                    {{ revision.displayVersion }}
                   </span>
                 </td>
                 <td>{{ revision.displayDate }}</td>
@@ -83,8 +85,10 @@
                 <td>
                   <a class="btn btn-primary btn-sm file-download" href="{{ revision.osfDownloadUrl }}"
                     data-bind="click: revision.download">
-                    <i class="icon-download-alt"></i>
+                    <i class="fa-download"></i>
                   </a>
+
+
                 </td>
               </tr>
             </tbody>
@@ -92,16 +96,36 @@
 
           <div data-bind="ifnot: versioningSupported">
             <hr>
+
             <div class="alert alert-warning" role="alert">
               {{ errorMessage }}
             </div>
+
           </div>
 
         </div>
+             %if node['tags'] or 'write' in user['permissions']:
+         <div class="tags addon-widget-container">
+            <div class="addon-widget-header clearfix">
+                <h4>Tags </h4>
+                <div class="pull-right">
+                </div>
+            </div>
+            <div class="addon-widget-body">
+                <input name="node-tags" id="node-tags" value="${','.join([tag for tag in node['tags']]) if node['tags'] else ''}" />
+                              Hello world!
+            </div>
+        </div>
+
+        %endif
+
+
       </div>
     </div>
 
   </div>
+
+
 
 <%def name="javascript_bottom()">
     ${parent.javascript_bottom()}

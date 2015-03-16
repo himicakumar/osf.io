@@ -180,7 +180,6 @@ class DropboxNodeSettings(AddonNodeSettingsBase):
     def create_waterbutler_log(self, auth, action, metadata):
         cleaned_path = clean_path(os.path.join(self.folder, metadata['path']))
         url = self.owner.web_url_for('addon_view_or_download_file', path=cleaned_path, provider='dropbox')
-
         self.owner.add_log(
             'dropbox_{0}'.format(action),
             auth=auth,
@@ -299,7 +298,7 @@ class DropboxNodeSettings(AddonNodeSettingsBase):
             clone.save()
         return clone, message
 
-    def after_remove_contributor(self, node, removed):
+    def after_remove_contributor(self, node, removed, auth=None):
         """If the removed contributor was the user who authorized the Dropbox
         addon, remove the auth credentials from this node.
         Return the message text that will be displayed to the user.
@@ -307,12 +306,23 @@ class DropboxNodeSettings(AddonNodeSettingsBase):
         if self.user_settings and self.user_settings.owner == removed:
             self.user_settings = None
             self.save()
-            name = removed.fullname
-            url = node.web_url_for('node_setting')
-            return (u'Because the Dropbox add-on for this project was authenticated'
-                    'by {name}, authentication information has been deleted. You '
-                    'can re-authenticate on the <a href="{url}">Settings</a> page'
-                    ).format(**locals())
+
+            message = (
+                u'Because the Dropbox add-on for {category} "{title}" was authenticated '
+                u'by {user}, authentication information has been deleted.'
+            ).format(
+                category=node.category_display,
+                title=node.title,
+                user=removed.fullname
+            )
+
+            if not auth or auth.user != removed:
+                url = node.web_url_for('node_setting')
+                message += (
+                    u' You can re-authenticate on the <a href="{url}">Settings</a> page.'
+                ).format(url=url)
+            #
+            return message
 
     def after_delete(self, node, user):
         self.deauthorize(Auth(user=user), add_log=True)

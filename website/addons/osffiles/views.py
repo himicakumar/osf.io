@@ -10,6 +10,7 @@ import logging
 
 from flask import request, send_file
 from modularodm import Q
+from modularodm.exceptions import ValidationError
 
 from framework.flask import redirect
 from framework.exceptions import HTTPError
@@ -27,6 +28,12 @@ from website import settings
 from website.project.model import NodeLog
 from website.util import rubeus, permissions
 
+from website.util.sanitize import clean_tag
+from website.project.model import Tag
+from website.project.decorators import (
+    must_be_valid_project, must_have_permission, must_not_be_registration
+)
+
 from website.addons.osffiles.model import NodeFile, OsfGuidFile
 from website.addons.osffiles.exceptions import FileNotModified
 from website.addons.osffiles.utils import get_latest_version_number, urlsafe_filename
@@ -35,6 +42,7 @@ from website.addons.osffiles.exceptions import (
     VersionNotFoundError,
     FileNotFoundError,
 )
+
 
 logger = logging.getLogger(__name__)
 
@@ -446,6 +454,53 @@ def osffiles_get_rendered_file(**kwargs):
     node_settings = kwargs['node_addon']
     cache_file = get_cache_file(kwargs['fid'], kwargs['vid'])
     return get_cache_content(node_settings, cache_file)
+
+
+
+
+def file_tag(tag, auth, **kwargs):
+    tag_obj = Tag.load(tag)
+    nodes = tag_obj.node__tagged if tag_obj else []
+    visible_nodes = [obj for obj in nodes if obj.can_view(auth)]
+    return {
+        'nodes': [
+            {
+                'title': file.name,
+                'url': node.url,
+            }
+            for node in visible_nodes
+        ],
+        'tag': tag,
+    }
+
+
+@must_be_valid_project  # injects project
+@must_have_permission('write')
+@must_not_be_registration
+def file_addtag(auth, **kwargs):
+
+    tag = clean_tag(kwargs['tag'])
+    node = kwargs['node'] or kwargs['file']
+
+    if tag:
+        try:
+            node.add_tag(tag=tag, auth=auth)
+            return {'status': 'success'}, http.CREATED
+        except ValidationError:
+            return {'status': 'error'}, http.BAD_REQUEST
+
+
+@must_be_valid_project  # injects project
+@must_have_permission('write')
+@must_not_be_registration
+def file_removetag(auth, **kwargs):
+
+    tag = clean_tag(kwargs['tag'])
+    node = kwargs['node'] or kwargs['file']
+
+    if tag:
+        node.remove_tag(tag=tag, auth=auth)
+        return {'status': 'success'}
 
 
 # todo will use later - JRS
