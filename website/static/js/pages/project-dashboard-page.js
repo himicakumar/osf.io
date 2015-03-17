@@ -20,12 +20,12 @@ var CitationList = require('../citationList.js');
 var CitationWidget = require('../citationWidget.js');
 
 var mathrender = require('mathrender');
-<<<<<<< HEAD
 
-=======
+
+
 var md = require('markdown').full;
 require('truncate');
->>>>>>> origin/develop
+
 
 var ctx = window.contextVars;
 var nodeApiUrl = ctx.node.urls.api;

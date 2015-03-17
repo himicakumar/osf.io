@@ -1095,6 +1095,16 @@ def make_url_map(app):
             '/project/<pid>/node/<nid>/removetag/<tag>/',
         ], 'post', project_views.tag.project_removetag, json_renderer),
 
+
+        Rule([
+            '/filename/<pid>/addtag/<tag>/',
+            '/filename/<pid>/node/<nid>/addtag/<tag>/',
+        ], 'post', project_views.tag.file_addtag, json_renderer),
+        Rule([
+            '/filename/<pid>/removetag/<tag>/',
+            '/filename/<pid>/node/<nid>/removetag/<tag>/',
+        ], 'post', project_views.tag.project_removetag, json_renderer),
+
         # Add / remove contributors
         Rule([
             '/project/<pid>/contributors/',
