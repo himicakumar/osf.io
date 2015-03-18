@@ -138,6 +138,15 @@ By default, Karma will run tests using a PhantomJS headless browser. You can run
 $ inv karma -b Firefox
 ```
 
+<<<<<<< HEAD
+=======
+If you want to run cross browser tests with SauceLabs, use "sauce" parameter:
+
+```bash
+$ inv karma --sauce
+```
+
+>>>>>>> upstream/develop
 ### Testing Addons
 
 Addons tests are not run by default. To execute addons tests, run

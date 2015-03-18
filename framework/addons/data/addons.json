@@ -55,6 +55,7 @@
                 "text": "S3 content cannot be registered."
             }
         },
+<<<<<<< HEAD
         "FigShare": {
             "Permissions": {
                 "status": "partial",
@@ -63,6 +64,16 @@
             "View / download file versions": {
                 "status": "partial",
                 "text": "FigShare content can be viewed and downloaded via OSF provided it is \"published\" on FigShare."
+=======
+        "figshare": {
+            "Permissions": {
+                "status": "partial",
+                "text": " Making an OSF project public or private is independent of making figshare content public or private. The OSF does not alter the permissions of linked figshare content."
+            },
+            "View / download file versions": {
+                "status": "partial",
+                "text": "figshare content can be viewed and downloaded via OSF provided it is \"published\" on figshare."
+>>>>>>> upstream/develop
             },
             "Add / update files": {
                 "status": "partial",
@@ -73,6 +84,7 @@
             },
             "Logs": {
                 "status": "partial",
+<<<<<<< HEAD
                 "text": "OSF keeps track of changes you make to your FigShare content through OSF, but not for changes made using FigShare directly."
             },
             "Forking": {
@@ -82,6 +94,17 @@
             "Registering": {
                 "status": "none",
                 "text": "FigShare content cannot be registered."
+=======
+                "text": "OSF keeps track of changes you make to your figshare content through OSF, but not for changes made using figshare directly."
+            },
+            "Forking": {
+                "status": "partial",
+                "text": "Forking a project or component does not copy figshare authorization unless the user forking the project is the same user who authorized the figshare add-on in the source project being forked."
+            },
+            "Registering": {
+                "status": "none",
+                "text": "figshare content cannot be registered."
+>>>>>>> upstream/develop
             }
         },
         "Dropbox": {

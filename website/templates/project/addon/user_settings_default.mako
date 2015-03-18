@@ -23,7 +23,11 @@
                 </td>
                 <td>
                     <a data-bind="click: $parent.deauthorizeNode">
+<<<<<<< HEAD
                         <i class="icon-remove text-danger" title="Deauthorize Project"></i>
+=======
+                        <i class="fa fa-times text-danger" title="Deauthorize Project"></i>
+>>>>>>> upstream/develop
                     </a>
                 </td>
             </tr>

@@ -56,7 +56,11 @@
                                         visible: validCredentials,
                                         click: toggleShare,
                                         css: {active: currentDisplay() === SHARE}"
+<<<<<<< HEAD
                         class="btn btn-sm btn-addon"><i class="fa-share-square-o"></i> Share on Dropbox
+=======
+                        class="btn btn-sm btn-addon"><i class="fa fa-share-square-o"></i> Share on Dropbox
+>>>>>>> upstream/develop
                             <span data-bind="visible: folder().path === '/'">(Cannot share root folder)</span>
                         </button>
                 </div>
@@ -95,13 +99,21 @@
                             <span data-clipboard-target="contribEmails"
                                 class="input-group-addon pointer"
                                 id="copyBtn">
+<<<<<<< HEAD
                                 <i class="fa-clipboard"></i>
+=======
+                                <i class="fa fa-clipboard"></i>
+>>>>>>> upstream/develop
                             </span>
                         </div>
 
                         <div class="input-group pull-right">
                             <a target="_blank" data-bind="attr.href: urls().share"
+<<<<<<< HEAD
                                 class="btn btn-link"><i class="fa-share-square-o"></i> Continue to Dropbox...</a>
+=======
+                                class="btn btn-link"><i class="fa fa-share-square-o"></i> Continue to Dropbox...</a>
+>>>>>>> upstream/develop
                         </div>
                     </div>
 

@@ -1,5 +1,9 @@
 'use strict';
+<<<<<<< HEAD
 var assign = require('object-assign');
+=======
+var $ = require('jquery');
+>>>>>>> upstream/develop
 // var sinon = window.sinon || require('sinon');
 
 /**
@@ -32,7 +36,11 @@ var defaultHeaders = {'Content-Type': 'application/json'};
 function createServer(sinon, endpoints) {
     var server = sinon.fakeServer.create();
     endpoints.forEach(function(endpoint) {
+<<<<<<< HEAD
         var headers = assign(
+=======
+        var headers = $.extend(
+>>>>>>> upstream/develop
             {},
             defaultHeaders,
             endpoints.headers

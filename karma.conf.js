@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var webpack = require('webpack');
 var webpackCommon = require('./webpack.common.config.js');
 
@@ -61,4 +62,14 @@ module.exports = function (config) {
         browserDisconnectTolerance : 1, // default 0
         browserNoActivityTimeout : 60000 //default 10000
     });
+=======
+var commonConfig = require('./karma.common.conf.js');
+var assign = require('object-assign');
+
+module.exports = function (config) {
+    config.set(assign(commonConfig, {
+        browsers: ['PhantomJS'],
+        reporters: ['spec'],
+    }));
+>>>>>>> upstream/develop
 };
