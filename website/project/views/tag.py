@@ -33,15 +33,10 @@ def project_tag(tag, auth, **kwargs):
 @must_be_valid_project  # injects project
 @must_have_permission('write')
 @must_not_be_registration
-<<<<<<< HEAD
 def project_addtag(auth, **kwargs):
     tag = clean_tag(kwargs['tag'])
     node = kwargs['node'] or kwargs['project']
-=======
-def project_addtag(auth, node, **kwargs):
 
-    tag = clean_tag(kwargs['tag'])
->>>>>>> cbfbd12bf81ef4ed3ed2fe9650a57506b32b9a4e
     if tag:
         try:
             node.add_tag(tag=tag, auth=auth)

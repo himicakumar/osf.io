@@ -18,16 +18,7 @@ from website.project.decorators import (
 from website.util import rubeus
 from website.project.model import has_anonymous_link
 
-<<<<<<< HEAD
-from website.util.sanitize import clean_tag
-from website.project.model import Tag
-from website.project.decorators import (
-    must_be_valid_project, must_have_permission, must_not_be_registration
-)
-
-=======
 from website.models import NodeLog
->>>>>>> cbfbd12bf81ef4ed3ed2fe9650a57506b32b9a4e
 from website.addons.osfstorage import model
 from website.addons.osfstorage import utils
 from website.addons.osfstorage import errors
@@ -279,61 +270,6 @@ def osf_storage_create_folder(payload, node_addon, **kwargs):
     else:
         parent = node_addon.root_node
 
-<<<<<<< HEAD
-    return {
-        'revisions': [
-            utils.serialize_revision(node, record, versions[idx], indices[idx])
-            for idx in range(len(versions))
-        ],
-        'more': more,
-    }
-
-def file_tag(tag, auth, **kwargs):
-    
-    tag_obj = Tag.load(tag)
-    nodes = tag_obj.node__tagged if tag_obj else []
-    visible_nodes = [obj for obj in nodes if obj.can_view(auth)]
-    return {
-        'nodes': [
-            {
-                'title': file.name,
-                'url': node.url,
-            }
-            for node in visible_nodes
-        ],
-        'tag': tag,
-    }
-
-
-@must_be_valid_project  # injects project
-@must_have_permission('write')
-@must_not_be_registration
-def file_addtag(auth, **kwargs):
-
-    tag = clean_tag(kwargs['tag'])
-    node = kwargs['node'] or kwargs['file']
-
-    if tag:
-        try:
-            node.add_tag(tag=tag, auth=auth)
-            return {'status': 'success'}, http.CREATED
-        except ValidationError:
-            return {'status': 'error'}, http.BAD_REQUEST
-
-
-@must_be_valid_project  # injects project
-@must_have_permission('write')
-@must_not_be_registration
-def file_removetag(auth, **kwargs):
-
-    tag = clean_tag(kwargs['tag'])
-    node = kwargs['node'] or kwargs['file']
-
-    if tag:
-        node.remove_tag(tag=tag, auth=auth)
-        return {'status': 'success'}
-
-=======
     try:
         folder = parent.append_folder(child)
     except KeyExistsException:
@@ -349,4 +285,3 @@ def file_removetag(auth, **kwargs):
     folder.log(Auth(user), NodeLog.FOLDER_CREATED)
 
     return folder.serialized(), httplib.CREATED
->>>>>>> cbfbd12bf81ef4ed3ed2fe9650a57506b32b9a4e
