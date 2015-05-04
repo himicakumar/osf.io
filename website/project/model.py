@@ -516,6 +516,7 @@ def validate_user(value):
     return True
 
 
+
 class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
 
     #: Whether this is a pointer or not

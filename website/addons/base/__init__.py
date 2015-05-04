@@ -378,7 +378,7 @@ class GuidFile(GuidStoredObject):
     def remove_tag(self, tag, auth, save=True):
        if tag in self.tags:
             self.tags.remove(tag)
-            self.add_log(
+            self.node.add_log(
                action=NodeLog.FILETAG_REMOVED,
                 params={
                     'file': self._id,
@@ -397,7 +397,7 @@ class GuidFile(GuidStoredObject):
                 new_tag = Tag(_id=tag)
             new_tag.save()
             self.tags.append(new_tag)
-            self.add_log(
+            self.node.add_log(
                action=NodeLog.FILETAG_ADDED,
                 params={
                     'file': self._id,
