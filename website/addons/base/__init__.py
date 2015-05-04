@@ -312,6 +312,9 @@ class GuidFile(GuidStoredObject):
         if self.revision:
             url.args[self.version_identifier] = self.revision
 
+        if request.args.get('view_only'):
+            url.args['view_only'] = request.args['view_only']
+
         return url.url
 
     @property
@@ -324,6 +327,9 @@ class GuidFile(GuidStoredObject):
 
         if self.revision:
             url.args[self.version_identifier] = self.revision
+
+        if request.args.get('view_only'):
+            url.args['view_only'] = request.args['view_only']
 
         return url.url
 
@@ -541,7 +547,7 @@ class AddonUserSettingsBase(AddonSettingsBase):
         return [
             node_addon.owner
             for node_addon in getattr(self, nodes_backref)
-            if not node_addon.owner.is_deleted
+            if node_addon.owner and not node_addon.owner.is_deleted
         ]
 
     def to_json(self, user):
